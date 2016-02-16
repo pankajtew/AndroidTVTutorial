@@ -1,6 +1,7 @@
 package com.sample.androidtv.fragments;
 
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v17.leanback.app.BrowseFragment;
 import android.support.v4.app.Fragment;
@@ -36,5 +37,6 @@ public class MainFragment extends BrowseFragment {
         setHeadersTransitionOnBackEnabled(true);
         setBrandColor(getResources().getColor(R.color.fastlane_background));
         setSearchAffordanceColor(getResources().getColor(R.color.search_opaque));
+        this.getView().setBackgroundColor(Color.GREEN);
     }
 }
