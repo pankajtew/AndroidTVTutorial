@@ -33,10 +33,11 @@ public class MainFragment extends BrowseFragment {
 
     private void initUI(){
         setTitle(getResources().getString(R.string.app_text));
+        setBadgeDrawable(getResources().getDrawable(R.drawable.ic_app_header));
         setHeadersState(HEADERS_ENABLED);
         setHeadersTransitionOnBackEnabled(true);
         setBrandColor(getResources().getColor(R.color.fastlane_background));
         setSearchAffordanceColor(getResources().getColor(R.color.search_opaque));
-        this.getView().setBackgroundColor(Color.GREEN);
+        this.getView().setBackgroundColor(Color.LTGRAY);
     }
 }
