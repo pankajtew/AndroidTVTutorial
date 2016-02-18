@@ -12,9 +12,18 @@ import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.View;
 
+import com.google.gson.Gson;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 import com.sample.androidtv.R;
+import com.sample.androidtv.model.Search;
+import com.sample.androidtv.model.SearchResult;
+import com.sample.androidtv.network.OMDBClient;
 import com.sample.androidtv.presenters.GridItemImagePresenter;
 import com.sample.androidtv.presenters.GridTextItemPresenter;
+import com.sample.androidtv.presenters.MovieCardPresenter;
+
+import cz.msebera.android.httpclient.Header;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -94,7 +103,7 @@ public class MainFragment extends BrowseFragment {
         mRowsAdapter = new ArrayObjectAdapter(new ListRowPresenter());
 
         HeaderItem gridItemTextPresenterHeader = new HeaderItem(0, "GridItem Text Presenter");
-        HeaderItem gridItemImagePresenterHeader = new HeaderItem(0, "GridItem Image Presenter");
+        HeaderItem gridItemImagePresenterHeader = new HeaderItem(1, "GridItem Image Presenter");
 
         GridItemImagePresenter gridItemImagePresenter = new GridItemImagePresenter();
         GridTextItemPresenter gridTextItemPresenter = new GridTextItemPresenter();
@@ -114,9 +123,42 @@ public class MainFragment extends BrowseFragment {
         gridImageRowAdapter.add("pause");
 
         mRowsAdapter.add(new ListRow(gridItemTextPresenterHeader,gridTextRowAdapter));
-        mRowsAdapter.add(new ListRow(gridItemImagePresenterHeader,gridImageRowAdapter));
+        mRowsAdapter.add(new ListRow(gridItemImagePresenterHeader, gridImageRowAdapter));
 
+
+        loadDataFromApi(2, "batman");
+        loadDataFromApi(3, "terminator");
         setAdapter(mRowsAdapter);
+    }
+
+    private void loadDataFromApi(final int pos, final String movieName) {
+        RequestParams searchParams = new RequestParams();
+        searchParams.put("s", movieName);
+        searchParams.put("type", "movie");
+        OMDBClient.get("", searchParams, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                Log.i(TAG, new String(responseBody));
+                Gson gson = new Gson();
+                SearchResult result = gson.fromJson(new String(responseBody), SearchResult.class);
+                HeaderItem cardHeaderItem = new HeaderItem(pos, movieName.toUpperCase() + " Movies");
+                MovieCardPresenter movieCardPresenter = new MovieCardPresenter();
+                ArrayObjectAdapter movieCardRowAdapter = new ArrayObjectAdapter(movieCardPresenter);
+                Log.i(TAG, result.toString());
+
+                for (int i = 0; i < result.getSearch().length; i++) {
+                    Search movie = result.getSearch()[i];
+                    if (!movie.getPoster().equalsIgnoreCase("N/A"))
+                        movieCardRowAdapter.add(movie);
+                }
+                mRowsAdapter.add(new ListRow(cardHeaderItem, movieCardRowAdapter));
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                Log.i(TAG + "Error", new String(error.toString()));
+            }
+        });
     }
 
 }
