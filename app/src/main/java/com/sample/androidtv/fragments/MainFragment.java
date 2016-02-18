@@ -179,6 +179,16 @@ public class MainFragment extends BrowseFragment {
                 }
             }
         });
+
+        setOnItemViewSelectedListener(new OnItemViewSelectedListener() {
+            @Override
+            public void onItemSelected(Presenter.ViewHolder itemViewHolder, Object item, RowPresenter.ViewHolder rowViewHolder, Row row) {
+                if (item instanceof String) {                    // GridItemPresenter
+                } else if (item instanceof Search) {              // CardPresenter
+                    mBackgroundManager.updateBackgroundWithDelay(((Search) item).getPoster());
+                }
+            }
+        });
     }
 
 }

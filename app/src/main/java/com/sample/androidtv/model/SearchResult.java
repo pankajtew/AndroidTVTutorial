@@ -36,7 +36,7 @@ public class SearchResult {
 
     @Override
     public String toString() {
-        return "ClassPojo [IMDB ITEM = " + Search + ", totalResults = " + totalResults + ", Response = " + Response + "]";
+        return "Class Search Result [IMDB ITEM = " + Search + ", totalResults = " + totalResults + ", Response = " + Response + "]";
     }
 
 }

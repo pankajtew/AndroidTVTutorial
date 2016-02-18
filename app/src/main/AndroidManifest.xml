@@ -2,17 +2,19 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.sample.androidtv">
 
-    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
+    <uses-permission android:name="android.permission.INTERNET" />
     <!-- TV app need to declare touchscreen not required -->
     <uses-feature
-        android:name="android.hardware.touchscreen"  android:required="false" />
+        android:name="android.hardware.touchscreen"
+        android:required="false" />
 
     <!--
      true:  your app runs on only TV
-     false: your app runs on phone and TV -->
+     false: your app runs on phone and TV
+    -->
     <uses-feature
-        android:name="android.software.leanback" android:required="true" />
-
+        android:name="android.software.leanback"
+        android:required="true" />
 
     <application
         android:allowBackup="true"
@@ -23,13 +25,16 @@
         android:theme="@style/Theme.Leanback">
         <activity
             android:name=".activities.MainActivity"
-            android:label="@string/title_activity_main"
-            >
+            android:label="@string/title_activity_main">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".activities.VideoDetailsActivity"
+            android:label="@string/title_activity_video_details"></activity>
     </application>
 
 </manifest>
