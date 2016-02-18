@@ -1,13 +1,16 @@
 package com.sample.androidtv.fragments;
 
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v17.leanback.app.BrowseFragment;
 import android.support.v17.leanback.widget.ArrayObjectAdapter;
 import android.support.v17.leanback.widget.HeaderItem;
 import android.support.v17.leanback.widget.ListRow;
 import android.support.v17.leanback.widget.ListRowPresenter;
+import android.support.v17.leanback.widget.OnItemViewSelectedListener;
+import android.support.v17.leanback.widget.Presenter;
+import android.support.v17.leanback.widget.Row;
+import android.support.v17.leanback.widget.RowPresenter;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.View;
@@ -16,6 +19,7 @@ import com.google.gson.Gson;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.sample.androidtv.R;
+import com.sample.androidtv.background.managers.GlideBackgroundManager;
 import com.sample.androidtv.model.Search;
 import com.sample.androidtv.model.SearchResult;
 import com.sample.androidtv.network.OMDBClient;
@@ -32,6 +36,7 @@ public class MainFragment extends BrowseFragment {
 
     private static final String TAG = MainFragment.class.getSimpleName();
     private ArrayObjectAdapter mRowsAdapter;
+    private GlideBackgroundManager mBackgroundManager;
     public MainFragment() {
         // Required empty public constructor
     }
@@ -45,6 +50,8 @@ public class MainFragment extends BrowseFragment {
         //loadTextRows();
         //loadMediaIconRows();
         loadMultipleRows();
+        mBackgroundManager = new GlideBackgroundManager(getActivity());
+        setupEventListener();
     }
 
     private void initUI(){
@@ -54,7 +61,7 @@ public class MainFragment extends BrowseFragment {
         setHeadersTransitionOnBackEnabled(true);
         setBrandColor(getResources().getColor(R.color.fastlane_background));
         setSearchAffordanceColor(getResources().getColor(R.color.search_opaque));
-        this.getView().setBackgroundColor(Color.LTGRAY);
+        //this.getView().setBackgroundColor(Color.LTGRAY);
         setOnSearchClickedListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -157,6 +164,19 @@ public class MainFragment extends BrowseFragment {
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                 Log.i(TAG + "Error", new String(error.toString()));
+            }
+        });
+    }
+
+    private void setupEventListener() {
+        setOnItemViewSelectedListener(new OnItemViewSelectedListener() {
+            @Override
+            public void onItemSelected(Presenter.ViewHolder itemViewHolder, Object item, RowPresenter.ViewHolder rowViewHolder, Row row) {
+                if (item instanceof String) {                    // GridItemPresenter
+                    mBackgroundManager.updateBackgroundWithDelay("http://heimkehrend.raindrop.jp/kl-hacker/wp-content/uploads/2014/10/RIMG0656.jpg");
+                } else if (item instanceof Search) {              // CardPresenter
+                    mBackgroundManager.updateBackgroundWithDelay(((Search) item).getPoster());
+                }
             }
         });
     }

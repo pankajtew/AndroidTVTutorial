@@ -35,7 +35,7 @@ public class MovieCardPresenter extends Presenter {
         Log.d(TAG, "onCreateViewHolder");
         sContext = parent.getContext();
 
-        ImageCardView cardView = new ImageCardView(sContext, R.style.customImageView);
+        ImageCardView cardView = new ImageCardView(sContext);
 
         cardView.setCardType(BaseCardView.CARD_TYPE_INFO_UNDER_WITH_EXTRA);
         cardView.setFocusable(true);
