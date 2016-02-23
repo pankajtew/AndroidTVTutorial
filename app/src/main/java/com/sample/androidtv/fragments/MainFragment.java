@@ -1,12 +1,14 @@
 package com.sample.androidtv.fragments;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v17.leanback.app.BrowseFragment;
 import android.support.v17.leanback.widget.ArrayObjectAdapter;
 import android.support.v17.leanback.widget.HeaderItem;
 import android.support.v17.leanback.widget.ListRow;
 import android.support.v17.leanback.widget.ListRowPresenter;
+import android.support.v17.leanback.widget.OnItemViewClickedListener;
 import android.support.v17.leanback.widget.OnItemViewSelectedListener;
 import android.support.v17.leanback.widget.Presenter;
 import android.support.v17.leanback.widget.Row;
@@ -19,6 +21,7 @@ import com.google.gson.Gson;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.sample.androidtv.R;
+import com.sample.androidtv.activities.VideoDetailsActivity;
 import com.sample.androidtv.background.managers.GlideBackgroundManager;
 import com.sample.androidtv.model.Search;
 import com.sample.androidtv.model.SearchResult;
@@ -180,12 +183,17 @@ public class MainFragment extends BrowseFragment {
             }
         });
 
-        setOnItemViewSelectedListener(new OnItemViewSelectedListener() {
+        setOnItemViewClickedListener(new OnItemViewClickedListener() {
             @Override
-            public void onItemSelected(Presenter.ViewHolder itemViewHolder, Object item, RowPresenter.ViewHolder rowViewHolder, Row row) {
+            public void onItemClicked(Presenter.ViewHolder itemViewHolder, Object item, RowPresenter.ViewHolder rowViewHolder, Row row) {
                 if (item instanceof String) {                    // GridItemPresenter
                 } else if (item instanceof Search) {              // CardPresenter
-                    mBackgroundManager.updateBackgroundWithDelay(((Search) item).getPoster());
+                    Search movie = (Search) item;
+                    Log.d(TAG, "Item: " + item.toString());
+                    Intent intent = new Intent(getActivity(), VideoDetailsActivity.class);
+                    intent.putExtra("IMDB_MOVIE", movie);
+
+                    getActivity().startActivity(intent);
                 }
             }
         });
