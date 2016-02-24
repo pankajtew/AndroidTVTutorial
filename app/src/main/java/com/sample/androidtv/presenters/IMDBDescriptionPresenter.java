@@ -18,5 +18,6 @@ public class IMDBDescriptionPresenter extends AbstractDetailsDescriptionPresente
         Search movie = (Search) item;
         vh.getTitle().setText(movie.getTitle());
         vh.getSubtitle().setText(movie.getYear());
+        vh.getBody().setText(movie.getImdbID() + "\n" + movie.toString());
     }
 }

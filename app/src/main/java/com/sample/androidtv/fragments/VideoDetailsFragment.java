@@ -16,13 +16,12 @@ import android.support.v17.leanback.widget.SparseArrayObjectAdapter;
 import android.support.v4.app.Fragment;
 import android.util.DisplayMetrics;
 
-import com.bumptech.glide.Glide;
 import com.sample.androidtv.background.managers.GlideBackgroundManager;
+import com.sample.androidtv.background.tasks.ImageLoadTask;
+import com.sample.androidtv.background.tasks.listeners.ImageTaskListener;
 import com.sample.androidtv.model.Search;
 import com.sample.androidtv.presenters.IMDBDescriptionPresenter;
 import com.sample.androidtv.presenters.IMDBDetailsOverViewRowPresenter;
-
-import java.util.concurrent.ExecutionException;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -40,7 +39,7 @@ public class VideoDetailsFragment extends DetailsFragment {
 
     private Search mSelectedMovie;
     private GlideBackgroundManager mBackgroundManager;
-
+    private ImageLoadTask imageLoadTask;
     public VideoDetailsFragment() {
         // Required empty public constructor
     }
@@ -89,36 +88,33 @@ public class VideoDetailsFragment extends DetailsFragment {
         mClassPresenterSelector = new ClassPresenterSelector();
         mClassPresenterSelector.addClassPresenter(DetailsOverviewRow.class, mRowPresenter);
         mAdapter = new ArrayObjectAdapter(mClassPresenterSelector);
-        DetailsOverviewRow actionRow = new DetailsOverviewRow(mSelectedMovie);
+
+        imageLoadTask = new ImageLoadTask(getActivity(), mSelectedMovie.getPoster(), DETAIL_THUMB_HEIGHT, DETAIL_THUMB_WIDTH, new ImageTaskListener() {
+            @Override
+            public void onImageLoadingStart(String url) {
+
+            }
+
+            @Override
+            public void onImageLoadingComplete(Bitmap bitmap) {
+                DetailsOverviewRow actionRow;
+                actionRow = new DetailsOverviewRow(mSelectedMovie);
 
            /* action setting*/
-        SparseArrayObjectAdapter sparseArrayObjectAdapter = new SparseArrayObjectAdapter();
-        sparseArrayObjectAdapter.set(0, new Action(0, "Play Video"));
-        sparseArrayObjectAdapter.set(1, new Action(1, "Rent at $1.99"));
-        sparseArrayObjectAdapter.set(2, new Action(2, "Purchase at $6.99"));
-        actionRow.setActionsAdapter(sparseArrayObjectAdapter);
-
-        try {
-            // Bitmap loading must be done in background thread in Android.
-            int width = (int) convertDpToPixel(DETAIL_THUMB_WIDTH, getActivity());
-            int height = (int) convertDpToPixel(DETAIL_THUMB_HEIGHT, getActivity());
-            Bitmap poster = Glide.with(getActivity())
-                    .load(mSelectedMovie.getPoster())
-                    .asBitmap()
-                    .into(width, height)
-                    .get();
-            actionRow.setImageBitmap(getActivity(), poster);
+                SparseArrayObjectAdapter sparseArrayObjectAdapter = new SparseArrayObjectAdapter();
+                sparseArrayObjectAdapter.set(0, new Action(0, "Play Video"));
+                sparseArrayObjectAdapter.set(1, new Action(1, "Rent at $1.99"));
+                sparseArrayObjectAdapter.set(2, new Action(2, "Purchase at $6.99"));
+                actionRow.setActionsAdapter(sparseArrayObjectAdapter);
+                actionRow.setImageBitmap(getActivity(), bitmap);
+                mAdapter.add(actionRow);
+                setAdapter(mAdapter);
+            }
+        });
+        imageLoadTask.execute();
 
 
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
-        mAdapter.add(actionRow);
-        setAdapter(mAdapter);
+
     }
 }
