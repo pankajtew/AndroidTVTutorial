@@ -16,6 +16,7 @@ import android.support.v17.leanback.widget.SparseArrayObjectAdapter;
 import android.support.v4.app.Fragment;
 import android.util.DisplayMetrics;
 
+import com.sample.androidtv.R;
 import com.sample.androidtv.background.managers.GlideBackgroundManager;
 import com.sample.androidtv.background.tasks.ImageLoadTask;
 import com.sample.androidtv.background.tasks.listeners.ImageTaskListener;
@@ -36,6 +37,7 @@ public class VideoDetailsFragment extends DetailsFragment {
     private IMDBDetailsOverViewRowPresenter mRowPresenter;
     private ClassPresenterSelector mClassPresenterSelector;
     private ListRow mRelatedVideoRow = null;
+    private SpinnerFragment spinnerFragment;
 
     private Search mSelectedMovie;
     private GlideBackgroundManager mBackgroundManager;
@@ -92,7 +94,8 @@ public class VideoDetailsFragment extends DetailsFragment {
         imageLoadTask = new ImageLoadTask(getActivity(), mSelectedMovie.getPoster(), DETAIL_THUMB_HEIGHT, DETAIL_THUMB_WIDTH, new ImageTaskListener() {
             @Override
             public void onImageLoadingStart(String url) {
-
+                spinnerFragment = new SpinnerFragment();
+                getFragmentManager().beginTransaction().add(R.id.main_browse_fragment, spinnerFragment).commit();
             }
 
             @Override
@@ -109,6 +112,7 @@ public class VideoDetailsFragment extends DetailsFragment {
                 actionRow.setImageBitmap(getActivity(), bitmap);
                 mAdapter.add(actionRow);
                 setAdapter(mAdapter);
+                getFragmentManager().beginTransaction().remove(spinnerFragment).commit();
             }
         });
         imageLoadTask.execute();
