@@ -34,7 +34,10 @@
         </activity>
         <activity
             android:name=".activities.VideoDetailsActivity"
-            android:label="@string/title_activity_video_details"></activity>
+            android:label="@string/title_activity_video_details" />
+        <activity
+            android:name=".activities.ErrorActivity"
+            android:label="@string/title_activity_error"></activity>
     </application>
 
 </manifest>

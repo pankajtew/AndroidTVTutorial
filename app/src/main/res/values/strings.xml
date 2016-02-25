@@ -7,4 +7,11 @@
 
     <string name="app_text">Android TV Tutorial</string>
     <string name="title_activity_video_details">VideoDetailsActivity</string>
+    <string name="title_activity_error">ErrorActivity</string>
+
+    <!--Error Messages-->
+    <string name="error_message">Sorry,An error occured</string>
+
+    <!--Dismiss Text-->
+    <string name="dismiss_button_text">Dismiss</string>
 </resources>
