@@ -41,7 +41,8 @@
             android:label="@string/title_activity_error" />
         <activity
             android:name=".activities.PlaybackActivity"
-            android:label="@string/title_activity_playback"></activity>
+            android:label="@string/title_activity_playback" />
+        <activity android:name=".activities.VerticalGridActivity"></activity>
     </application>
 
 </manifest>

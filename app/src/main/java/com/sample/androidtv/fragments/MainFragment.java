@@ -22,6 +22,7 @@ import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.sample.androidtv.R;
 import com.sample.androidtv.activities.ErrorActivity;
+import com.sample.androidtv.activities.VerticalGridActivity;
 import com.sample.androidtv.activities.VideoDetailsActivity;
 import com.sample.androidtv.background.managers.GlideBackgroundManager;
 import com.sample.androidtv.model.Search;
@@ -189,8 +190,13 @@ public class MainFragment extends BrowseFragment {
             public void onItemClicked(Presenter.ViewHolder itemViewHolder, Object item, RowPresenter.ViewHolder rowViewHolder, Row row) {
                 if (item instanceof String) {                    // GridItemPresenter
 
-                    Intent intent = new Intent(getActivity(), ErrorActivity.class);
-                    startActivity(intent);
+                    if (((String) item).equalsIgnoreCase("Item ---> 1")) {
+                        Intent intent = new Intent(getActivity(), VerticalGridActivity.class);
+                        startActivity(intent);
+                    } else {
+                        Intent intent = new Intent(getActivity(), ErrorActivity.class);
+                        startActivity(intent);
+                    }
 
                 } else if (item instanceof Search) {              // CardPresenter
                     Search movie = (Search) item;
