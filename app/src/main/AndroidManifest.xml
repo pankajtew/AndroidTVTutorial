@@ -3,6 +3,7 @@
     package="com.sample.androidtv">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <!-- TV app need to declare touchscreen not required -->
     <uses-feature
         android:name="android.hardware.touchscreen"
@@ -37,7 +38,10 @@
             android:label="@string/title_activity_video_details" />
         <activity
             android:name=".activities.ErrorActivity"
-            android:label="@string/title_activity_error"></activity>
+            android:label="@string/title_activity_error" />
+        <activity
+            android:name=".activities.PlaybackActivity"
+            android:label="@string/title_activity_playback"></activity>
     </application>
 
 </manifest>

@@ -1,6 +1,7 @@
 package com.sample.androidtv.fragments;
 
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,10 +10,12 @@ import android.support.v17.leanback.widget.Action;
 import android.support.v17.leanback.widget.ArrayObjectAdapter;
 import android.support.v17.leanback.widget.ClassPresenterSelector;
 import android.support.v17.leanback.widget.DetailsOverviewRow;
+import android.support.v17.leanback.widget.OnActionClickedListener;
 import android.support.v17.leanback.widget.SparseArrayObjectAdapter;
 import android.support.v4.app.Fragment;
 
 import com.sample.androidtv.R;
+import com.sample.androidtv.activities.PlaybackActivity;
 import com.sample.androidtv.background.managers.GlideBackgroundManager;
 import com.sample.androidtv.background.tasks.ImageLoadTask;
 import com.sample.androidtv.background.tasks.listeners.ImageTaskListener;
@@ -80,6 +83,19 @@ public class VideoDetailsFragment extends DetailsFragment {
                 sparseArrayObjectAdapter.set(2, new Action(2, "Purchase at $6.99"));
                 actionRow.setActionsAdapter(sparseArrayObjectAdapter);
                 actionRow.setImageBitmap(getActivity(), bitmap);
+
+                mFwdorPresenter.setOnActionClickedListener(new OnActionClickedListener() {
+                    @Override
+                    public void onActionClicked(Action action) {
+                        switch ((int) action.getId()) {
+                            case 0:
+                                Intent intent = new Intent(getActivity(), PlaybackActivity.class);
+                                intent.putExtra("IMDB_MOVIE", movie);
+                                startActivity(intent);
+                                break;
+                        }
+                    }
+                });
                 mAdapter.add(actionRow);
                 setAdapter(mAdapter);
                 getFragmentManager().beginTransaction().remove(spinnerFragment).commit();

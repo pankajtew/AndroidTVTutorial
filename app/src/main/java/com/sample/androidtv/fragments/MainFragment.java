@@ -190,7 +190,7 @@ public class MainFragment extends BrowseFragment {
                 if (item instanceof String) {                    // GridItemPresenter
 
                     Intent intent = new Intent(getActivity(), ErrorActivity.class);
-                    getActivity().startActivity(intent);
+                    startActivity(intent);
 
                 } else if (item instanceof Search) {              // CardPresenter
                     Search movie = (Search) item;

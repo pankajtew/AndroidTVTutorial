@@ -8,6 +8,7 @@
     <string name="app_text">Android TV Tutorial</string>
     <string name="title_activity_video_details">VideoDetailsActivity</string>
     <string name="title_activity_error">ErrorActivity</string>
+    <string name="title_activity_playback">PlaybackActivity</string>
 
     <!--Error Messages-->
     <string name="error_message">Sorry,An error occured</string>
