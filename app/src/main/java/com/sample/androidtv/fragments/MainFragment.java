@@ -11,6 +11,7 @@ import android.support.v17.leanback.widget.ListRowPresenter;
 import android.support.v17.leanback.widget.OnItemViewClickedListener;
 import android.support.v17.leanback.widget.OnItemViewSelectedListener;
 import android.support.v17.leanback.widget.Presenter;
+import android.support.v17.leanback.widget.PresenterSelector;
 import android.support.v17.leanback.widget.Row;
 import android.support.v17.leanback.widget.RowPresenter;
 import android.support.v4.app.Fragment;
@@ -28,9 +29,14 @@ import com.sample.androidtv.background.managers.GlideBackgroundManager;
 import com.sample.androidtv.model.Search;
 import com.sample.androidtv.model.SearchResult;
 import com.sample.androidtv.network.OMDBClient;
+import com.sample.androidtv.presenters.CustomHeaderItemPresenter;
+import com.sample.androidtv.presenters.CustomHeaderRowPresenter;
 import com.sample.androidtv.presenters.GridItemImagePresenter;
 import com.sample.androidtv.presenters.GridTextItemPresenter;
 import com.sample.androidtv.presenters.MovieCardPresenter;
+import com.sample.androidtv.view.model.CustomHeaderItem;
+import com.sample.androidtv.view.model.IMenuItems;
+import com.sample.androidtv.view.rows.CustomHeaderRow;
 
 import cz.msebera.android.httpclient.Header;
 
@@ -54,7 +60,8 @@ public class MainFragment extends BrowseFragment {
         initUI();
         //loadTextRows();
         //loadMediaIconRows();
-        loadMultipleRows();
+        //loadMultipleRows();
+        loadCustomHeaderRow();
         mBackgroundManager = new GlideBackgroundManager(getActivity());
         setupEventListener();
     }
@@ -73,6 +80,33 @@ public class MainFragment extends BrowseFragment {
 
             }
         });
+
+    }
+
+    private void loadCustomHeaderRow() {
+        setHeaderPresenterSelector(new PresenterSelector() {
+            @Override
+            public Presenter getPresenter(Object item) {
+                return new CustomHeaderItemPresenter();
+            }
+        });
+        mRowsAdapter = new ArrayObjectAdapter(new CustomHeaderRowPresenter());
+        CustomHeaderItem gridItemTextPresenterCustomHeaderRow0 = new CustomHeaderItem(0, "With Drawable", android.R.drawable.ic_dialog_email);
+        CustomHeaderItem gridItemTextPresenterCustomHeaderRow1 = new CustomHeaderItem(1, "With URL", "http://icons.iconarchive.com/icons/designbolts/free-multimedia/1024/iMac-icon.png", IMenuItems.MENU_ITEM_WITH_ICON);
+        CustomHeaderItem gridItemTextPresenterCustomHeaderRow2 = new CustomHeaderItem(2, "Divider Non Focus", android.R.drawable.ic_menu_report_image, IMenuItems.MENU_DIVIDER_ITEM_WITH_ICON, false);
+        CustomHeaderItem gridItemTextPresenterCustomHeaderRow3 = new CustomHeaderItem(3, "Divider Focus", "http://dl.hiapphere.com/data/icon/201409/HiAppHere_com_kov.theme.lumos.png", IMenuItems.MENU_DIVIDER_ITEM_WITH_ICON);
+        GridTextItemPresenter gridItemImagePresenter = new GridTextItemPresenter();
+        ArrayObjectAdapter gridTextRowAdapter = new ArrayObjectAdapter(gridItemImagePresenter);
+        gridTextRowAdapter.add("Item ---> 1");
+        gridTextRowAdapter.add("Item ---> 2");
+        gridTextRowAdapter.add("Item ---> 3");
+        gridTextRowAdapter.add("Item ---> 4");
+        mRowsAdapter.add(new CustomHeaderRow(gridItemTextPresenterCustomHeaderRow0, gridItemTextPresenterCustomHeaderRow0.getHeaderItem(), gridTextRowAdapter));
+        mRowsAdapter.add(new CustomHeaderRow(gridItemTextPresenterCustomHeaderRow1, gridItemTextPresenterCustomHeaderRow0.getHeaderItem(), gridTextRowAdapter));
+        mRowsAdapter.add(new CustomHeaderRow(gridItemTextPresenterCustomHeaderRow2, gridItemTextPresenterCustomHeaderRow0.getHeaderItem(), gridTextRowAdapter));
+        mRowsAdapter.add(new CustomHeaderRow(gridItemTextPresenterCustomHeaderRow3, gridItemTextPresenterCustomHeaderRow0.getHeaderItem(), gridTextRowAdapter));
+        setAdapter(mRowsAdapter);
+
     }
 
     private void loadTextRows(){
@@ -116,6 +150,7 @@ public class MainFragment extends BrowseFragment {
 
         HeaderItem gridItemTextPresenterHeader = new HeaderItem(0, "GridItem Text Presenter");
         HeaderItem gridItemImagePresenterHeader = new HeaderItem(1, "GridItem Image Presenter");
+        CustomHeaderItem gridItemTextPresenterCustomHeader = new CustomHeaderItem(2, "Custom Header", android.R.drawable.ic_dialog_email);
 
         GridItemImagePresenter gridItemImagePresenter = new GridItemImagePresenter();
         GridTextItemPresenter gridTextItemPresenter = new GridTextItemPresenter();
@@ -137,11 +172,11 @@ public class MainFragment extends BrowseFragment {
         mRowsAdapter.add(new ListRow(gridItemTextPresenterHeader,gridTextRowAdapter));
         mRowsAdapter.add(new ListRow(gridItemImagePresenterHeader, gridImageRowAdapter));
 
-
         loadDataFromApi(2, "batman");
         loadDataFromApi(3, "terminator");
         setAdapter(mRowsAdapter);
     }
+
 
     private void loadDataFromApi(final int pos, final String movieName) {
         RequestParams searchParams = new RequestParams();
@@ -154,6 +189,36 @@ public class MainFragment extends BrowseFragment {
                 Gson gson = new Gson();
                 SearchResult result = gson.fromJson(new String(responseBody), SearchResult.class);
                 HeaderItem cardHeaderItem = new HeaderItem(pos, movieName.toUpperCase() + " Movies");
+                MovieCardPresenter movieCardPresenter = new MovieCardPresenter();
+                ArrayObjectAdapter movieCardRowAdapter = new ArrayObjectAdapter(movieCardPresenter);
+                Log.i(TAG, result.toString());
+
+                for (int i = 0; i < result.getSearch().length; i++) {
+                    Search movie = result.getSearch()[i];
+                    if (!movie.getPoster().equalsIgnoreCase("N/A"))
+                        movieCardRowAdapter.add(movie);
+                }
+                mRowsAdapter.add(new ListRow(cardHeaderItem, movieCardRowAdapter));
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                Log.i(TAG + "Error", new String(error.toString()));
+            }
+        });
+    }
+
+    private void loadDataFromApiCustomHeader(final int pos, final String movieName) {
+        RequestParams searchParams = new RequestParams();
+        searchParams.put("s", movieName);
+        searchParams.put("type", "movie");
+        OMDBClient.get("", searchParams, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                Log.i(TAG, new String(responseBody));
+                Gson gson = new Gson();
+                SearchResult result = gson.fromJson(new String(responseBody), SearchResult.class);
+                CustomHeaderItem cardHeaderItem = new CustomHeaderItem(pos, movieName.toUpperCase() + " Movies", "http://www.clipartbest.com/cliparts/ace/XLK/aceXLKdc4.gif", IMenuItems.MENU_ITEM_WITH_ICON);
                 MovieCardPresenter movieCardPresenter = new MovieCardPresenter();
                 ArrayObjectAdapter movieCardRowAdapter = new ArrayObjectAdapter(movieCardPresenter);
                 Log.i(TAG, result.toString());
