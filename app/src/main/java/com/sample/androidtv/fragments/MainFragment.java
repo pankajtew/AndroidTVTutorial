@@ -102,9 +102,9 @@ public class MainFragment extends BrowseFragment {
         gridTextRowAdapter.add("Item ---> 3");
         gridTextRowAdapter.add("Item ---> 4");
         mRowsAdapter.add(new CustomHeaderRow(gridItemTextPresenterCustomHeaderRow0, gridItemTextPresenterCustomHeaderRow0.getHeaderItem(), gridTextRowAdapter));
-        mRowsAdapter.add(new CustomHeaderRow(gridItemTextPresenterCustomHeaderRow1, gridItemTextPresenterCustomHeaderRow0.getHeaderItem(), gridTextRowAdapter));
-        mRowsAdapter.add(new CustomHeaderRow(gridItemTextPresenterCustomHeaderRow2, gridItemTextPresenterCustomHeaderRow0.getHeaderItem(), gridTextRowAdapter));
-        mRowsAdapter.add(new CustomHeaderRow(gridItemTextPresenterCustomHeaderRow3, gridItemTextPresenterCustomHeaderRow0.getHeaderItem(), gridTextRowAdapter));
+        mRowsAdapter.add(new CustomHeaderRow(gridItemTextPresenterCustomHeaderRow1, gridItemTextPresenterCustomHeaderRow1.getHeaderItem(), gridTextRowAdapter));
+        mRowsAdapter.add(new CustomHeaderRow(gridItemTextPresenterCustomHeaderRow2, gridItemTextPresenterCustomHeaderRow2.getHeaderItem(), gridTextRowAdapter));
+        mRowsAdapter.add(new CustomHeaderRow(gridItemTextPresenterCustomHeaderRow3, gridItemTextPresenterCustomHeaderRow3.getHeaderItem(), gridTextRowAdapter));
         setAdapter(mRowsAdapter);
 
     }
