@@ -30,13 +30,13 @@ import com.sample.androidtv.model.Search;
 import com.sample.androidtv.model.SearchResult;
 import com.sample.androidtv.network.OMDBClient;
 import com.sample.androidtv.presenters.CustomHeaderItemPresenter;
-import com.sample.androidtv.presenters.CustomHeaderRowPresenter;
+import com.sample.androidtv.presenters.CustomListRowPresenter;
 import com.sample.androidtv.presenters.GridItemImagePresenter;
 import com.sample.androidtv.presenters.GridTextItemPresenter;
 import com.sample.androidtv.presenters.MovieCardPresenter;
 import com.sample.androidtv.view.model.CustomHeaderItem;
 import com.sample.androidtv.view.model.IMenuItems;
-import com.sample.androidtv.view.rows.CustomHeaderRow;
+import com.sample.androidtv.view.rows.CustomListRow;
 
 import cz.msebera.android.httpclient.Header;
 
@@ -90,21 +90,32 @@ public class MainFragment extends BrowseFragment {
                 return new CustomHeaderItemPresenter();
             }
         });
-        mRowsAdapter = new ArrayObjectAdapter(new CustomHeaderRowPresenter());
+        mRowsAdapter = new ArrayObjectAdapter(new CustomListRowPresenter());
         CustomHeaderItem gridItemTextPresenterCustomHeaderRow0 = new CustomHeaderItem(0, "With Drawable", android.R.drawable.ic_dialog_email);
         CustomHeaderItem gridItemTextPresenterCustomHeaderRow1 = new CustomHeaderItem(1, "With URL", "http://icons.iconarchive.com/icons/designbolts/free-multimedia/1024/iMac-icon.png", IMenuItems.MENU_ITEM_WITH_ICON);
         CustomHeaderItem gridItemTextPresenterCustomHeaderRow2 = new CustomHeaderItem(2, "Divider Non Focus", android.R.drawable.ic_menu_report_image, IMenuItems.MENU_DIVIDER_ITEM_WITH_ICON, false);
         CustomHeaderItem gridItemTextPresenterCustomHeaderRow3 = new CustomHeaderItem(3, "Divider Focus", "http://dl.hiapphere.com/data/icon/201409/HiAppHere_com_kov.theme.lumos.png", IMenuItems.MENU_DIVIDER_ITEM_WITH_ICON);
-        GridTextItemPresenter gridItemImagePresenter = new GridTextItemPresenter();
-        ArrayObjectAdapter gridTextRowAdapter = new ArrayObjectAdapter(gridItemImagePresenter);
+        CustomHeaderItem gridItemTextPresenterCustomHeaderRow4 = new CustomHeaderItem(3, "Multi Rows ", "https://cdn2.iconfinder.com/data/icons/budicon-interface-layout-2/16/131-interface_-_list_row_layout-128.png", IMenuItems.MENU_ITEM_WITH_ICON);
+        GridTextItemPresenter gridTextItemPresenter = new GridTextItemPresenter();
+        ArrayObjectAdapter gridTextRowAdapter = new ArrayObjectAdapter(gridTextItemPresenter);
         gridTextRowAdapter.add("Item ---> 1");
         gridTextRowAdapter.add("Item ---> 2");
         gridTextRowAdapter.add("Item ---> 3");
         gridTextRowAdapter.add("Item ---> 4");
-        mRowsAdapter.add(new CustomHeaderRow(gridItemTextPresenterCustomHeaderRow0, gridItemTextPresenterCustomHeaderRow0.getHeaderItem(), gridTextRowAdapter));
-        mRowsAdapter.add(new CustomHeaderRow(gridItemTextPresenterCustomHeaderRow1, gridItemTextPresenterCustomHeaderRow1.getHeaderItem(), gridTextRowAdapter));
-        mRowsAdapter.add(new CustomHeaderRow(gridItemTextPresenterCustomHeaderRow2, gridItemTextPresenterCustomHeaderRow2.getHeaderItem(), gridTextRowAdapter));
-        mRowsAdapter.add(new CustomHeaderRow(gridItemTextPresenterCustomHeaderRow3, gridItemTextPresenterCustomHeaderRow3.getHeaderItem(), gridTextRowAdapter));
+
+        ArrayObjectAdapter gridTextObjectAdapter = new ArrayObjectAdapter(gridTextItemPresenter);
+        gridTextObjectAdapter.add("ITEM-CUSTOM-ROW-1");
+        gridTextObjectAdapter.add("ITEM-CUSTOM-ROW-2");
+        gridTextObjectAdapter.add("ITEM-CUSTOM-ROW-3");
+        gridTextObjectAdapter.add("ITEM-CUSTOM-ROW-4");
+        CustomListRow customListRow = new CustomListRow(gridItemTextPresenterCustomHeaderRow4, gridTextObjectAdapter);
+        customListRow.setNumRows(4);
+//        mRowsAdapter.add(new CustomHeaderRow(gridItemTextPresenterCustomHeaderRow0, gridItemTextPresenterCustomHeaderRow0.getHeaderItem(), gridTextRowAdapter));
+//        mRowsAdapter.add(new CustomHeaderRow(gridItemTextPresenterCustomHeaderRow1, gridItemTextPresenterCustomHeaderRow1.getHeaderItem(), gridTextRowAdapter));
+//        mRowsAdapter.add(new CustomHeaderRow(gridItemTextPresenterCustomHeaderRow2, gridItemTextPresenterCustomHeaderRow2.getHeaderItem(), gridTextRowAdapter));
+//        mRowsAdapter.add(new CustomHeaderRow(gridItemTextPresenterCustomHeaderRow3, gridItemTextPresenterCustomHeaderRow3.getHeaderItem(), gridTextRowAdapter));
+        mRowsAdapter.add(customListRow);
+        mRowsAdapter.add(new CustomListRow(gridItemTextPresenterCustomHeaderRow0, gridTextRowAdapter));
         setAdapter(mRowsAdapter);
 
     }

@@ -3,6 +3,7 @@ package com.sample.androidtv.presenters;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.support.v17.leanback.widget.ListRow;
 import android.support.v17.leanback.widget.Presenter;
 import android.support.v17.leanback.widget.RowHeaderPresenter;
 import android.view.LayoutInflater;
@@ -17,7 +18,6 @@ import com.bumptech.glide.Glide;
 import com.sample.androidtv.R;
 import com.sample.androidtv.view.model.CustomHeaderItem;
 import com.sample.androidtv.view.model.IMenuItems;
-import com.sample.androidtv.view.rows.CustomHeaderRow;
 
 /**
  * Created by pankaj on 28/3/16.
@@ -42,7 +42,8 @@ public class CustomHeaderItemPresenter extends RowHeaderPresenter {
 
     @Override
     public void onBindViewHolder(Presenter.ViewHolder viewHolder, Object item) {
-        CustomHeaderItem menuItem = ((CustomHeaderRow) item).getMenuHeaderItem();
+        //CustomHeaderItem menuItem = ((CustomHeaderRow) item).getMenuHeaderItem();
+        CustomHeaderItem menuItem = (CustomHeaderItem) ((ListRow) item).getHeaderItem();
         Drawable icon;
         Uri imageURI;
 
