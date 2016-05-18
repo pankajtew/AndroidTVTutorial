@@ -33,9 +33,37 @@
                 <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <provider
+            android:name=".database.VideoContentProvider"
+            android:authorities="com.sample.androidtv"
+            android:exported="true" />
+
         <activity
             android:name=".activities.VideoDetailsActivity"
-            android:label="@string/title_activity_video_details" />
+            android:label="Android TV Sample">
+            <!--android:label="@string/title_activity_video_details"-->
+
+
+            <!--&lt;!&ndash; Receives the search request. &ndash;&gt;
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+                &lt;!&ndash; No category needed, because the Intent will specify this class component&ndash;&gt;
+            </intent-filter>
+            &lt;!&ndash; Points to searchable meta data. &ndash;&gt;
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />-->
+
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
+
+        </activity>
         <activity
             android:name=".activities.ErrorActivity"
             android:label="@string/title_activity_error" />
@@ -43,6 +71,10 @@
             android:name=".activities.PlaybackActivity"
             android:label="@string/title_activity_playback" />
         <activity android:name=".activities.VerticalGridActivity"></activity>
+        <activity android:name=".activities.GuidedStepActivity"></activity>
+        <activity android:name=".activities.SearchActivity" />
+
     </application>
+    .
 
 </manifest>

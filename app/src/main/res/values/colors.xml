@@ -4,4 +4,7 @@
         <color name="fastlane_background">#e52d27</color>
         <color name="search_opaque">#ffaa3f</color>
         <color name="default_background">#33aaff</color>
+
+        <color name="primary">#329601</color>
+        <color name="primary_dark">#ffee04</color>
 </resources>

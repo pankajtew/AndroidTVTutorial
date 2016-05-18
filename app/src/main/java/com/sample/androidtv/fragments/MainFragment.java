@@ -23,6 +23,8 @@ import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.sample.androidtv.R;
 import com.sample.androidtv.activities.ErrorActivity;
+import com.sample.androidtv.activities.GuidedStepActivity;
+import com.sample.androidtv.activities.SearchActivity;
 import com.sample.androidtv.activities.VerticalGridActivity;
 import com.sample.androidtv.activities.VideoDetailsActivity;
 import com.sample.androidtv.background.managers.GlideBackgroundManager;
@@ -77,7 +79,8 @@ public class MainFragment extends BrowseFragment {
         setOnSearchClickedListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent = new Intent(getActivity(), SearchActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -102,6 +105,7 @@ public class MainFragment extends BrowseFragment {
         gridTextRowAdapter.add("Item ---> 2");
         gridTextRowAdapter.add("Item ---> 3");
         gridTextRowAdapter.add("Item ---> 4");
+        gridTextRowAdapter.add("GuidedStepFragment");
 
         ArrayObjectAdapter gridTextObjectAdapter = new ArrayObjectAdapter(gridTextItemPresenter);
         gridTextObjectAdapter.add("ITEM-CUSTOM-ROW-1");
@@ -268,6 +272,9 @@ public class MainFragment extends BrowseFragment {
 
                     if (((String) item).equalsIgnoreCase("Item ---> 1")) {
                         Intent intent = new Intent(getActivity(), VerticalGridActivity.class);
+                        startActivity(intent);
+                    } else if (((String) item).equalsIgnoreCase("GuidedStepFragment")) {
+                        Intent intent = new Intent(getActivity(), GuidedStepActivity.class);
                         startActivity(intent);
                     } else {
                         Intent intent = new Intent(getActivity(), ErrorActivity.class);

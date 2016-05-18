@@ -2,4 +2,59 @@
 <resources>
 
     <style name="AppTheme" parent="@style/Theme.Leanback"></style>
+
+    <style name="Widget.Example.Leanback.GuidanceIconStyle" parent="Widget.Leanback.GuidanceIconStyle">
+        <item name="android:background">@drawable/shape_round</item>
+    </style>
+
+    <style name="Widget.Example.Leanback.GuidanceDescriptionStyle" parent="Widget.Leanback.GuidanceDescriptionStyle">
+        <item name="android:textColor">#255be2</item>
+        <item name="android:textSize">22sp</item>
+        <item name="android:textStyle">italic</item>
+    </style>
+
+
+    <style name="GuidanceContainerStyle">
+        <item name="android:background">@drawable/shape_round</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
+
+
+    <style name="Widget.Example.Leanback.GuidanceContainerStyle" parent="Widget.Leanback.GuidanceContainerStyle">
+        <item name="android:background">@drawable/filed_round_shape</item>
+    </style>
+
+    <style name="Widget.Example.Leanback.GuidedActionItemContainerStyle" parent="Widget.Leanback.GuidedActionItemContainerStyle">
+        <item name="android:background">@drawable/shape_round</item>
+    </style>
+
+    <style name="Widget.Example.Leanback.GuidanceBreadCrumbStyle" parent="Widget.Leanback.GuidanceBreadcrumbStyle">
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textStyle">bold|italic</item>
+    </style>
+
+    <style name="Widget.Example.Leanback.GuidedActionItemChevronStyle" parent="Widget.Leanback.GuidedActionItemChevronStyle">
+        <item name="android:background">@drawable/filed_round_shape</item>
+    </style>
+
+    <style name="Theme.Example.Leanback.GuidedStep.First" parent="Theme.Leanback.GuidedStep">
+        <item name="guidanceIconStyle">@style/Widget.Example.Leanback.GuidanceIconStyle</item>
+        <item name="guidanceDescriptionStyle">
+            @style/Widget.Example.Leanback.GuidanceDescriptionStyle
+        </item>
+        <item name="guidanceContainerStyle">@style/Widget.Example.Leanback.GuidanceContainerStyle
+        </item>
+        <item name="guidanceBreadcrumbStyle">
+            @style/Widget.Example.Leanback.GuidanceBreadCrumbStyle
+        </item>
+        <item name="guidedActionItemContainerStyle">
+            @style/Widget.Example.Leanback.GuidedActionItemContainerStyle
+        </item>
+        <item name="guidedActionItemChevronStyle">
+            @style/Widget.Example.Leanback.GuidedActionItemChevronStyle
+        </item>
+    </style>
+
+
 </resources>
