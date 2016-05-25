@@ -1,5 +1,6 @@
 package com.sample.androidtv.fragments;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v17.leanback.widget.ArrayObjectAdapter;
 import android.support.v17.leanback.widget.VerticalGridPresenter;
@@ -121,5 +122,6 @@ public class VerticalGridFragment extends android.support.v17.leanback.app.Verti
 
 
     }
+
 }
 

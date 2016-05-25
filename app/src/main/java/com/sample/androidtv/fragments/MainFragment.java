@@ -15,8 +15,10 @@ import android.support.v17.leanback.widget.PresenterSelector;
 import android.support.v17.leanback.widget.Row;
 import android.support.v17.leanback.widget.RowPresenter;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -36,9 +38,12 @@ import com.sample.androidtv.presenters.CustomListRowPresenter;
 import com.sample.androidtv.presenters.GridItemImagePresenter;
 import com.sample.androidtv.presenters.GridTextItemPresenter;
 import com.sample.androidtv.presenters.MovieCardPresenter;
+import com.sample.androidtv.recommendation.RecommendationFactory;
 import com.sample.androidtv.view.model.CustomHeaderItem;
 import com.sample.androidtv.view.model.IMenuItems;
 import com.sample.androidtv.view.rows.CustomListRow;
+
+import java.util.ArrayList;
 
 import cz.msebera.android.httpclient.Header;
 
@@ -49,7 +54,9 @@ public class MainFragment extends BrowseFragment {
 
     private static final String TAG = MainFragment.class.getSimpleName();
     private ArrayObjectAdapter mRowsAdapter;
+    private ArrayList<Search> mItems = new ArrayList<>();
     private GlideBackgroundManager mBackgroundManager;
+    private static int recommendationCounter = 0;
     public MainFragment() {
         // Required empty public constructor
     }
@@ -64,6 +71,7 @@ public class MainFragment extends BrowseFragment {
         //loadMediaIconRows();
         //loadMultipleRows();
         loadCustomHeaderRow();
+        //loadMultipleRows();
         mBackgroundManager = new GlideBackgroundManager(getActivity());
         setupEventListener();
     }
@@ -120,10 +128,29 @@ public class MainFragment extends BrowseFragment {
 //        mRowsAdapter.add(new CustomHeaderRow(gridItemTextPresenterCustomHeaderRow3, gridItemTextPresenterCustomHeaderRow3.getHeaderItem(), gridTextRowAdapter));
         mRowsAdapter.add(customListRow);
         mRowsAdapter.add(new CustomListRow(gridItemTextPresenterCustomHeaderRow0, gridTextRowAdapter));
+        mRowsAdapter.add(new CustomListRow(gridItemTextPresenterCustomHeaderRow1,loadSampleSearchData()));
         setAdapter(mRowsAdapter);
 
     }
 
+    private ArrayObjectAdapter loadSampleSearchData(){
+        String json = "{\"Search\":[{\"Title\":\"Batman Begins\",\"Year\":\"2005\",\"imdbID\":\"tt0372784\",\"Type\":\"movie\",\"Poster\":\"http://ia.media-imdb.com/images/M/MV5BNTM3OTc0MzM2OV5BMl5BanBnXkFtZTYwNzUwMTI3._V1_SX300.jpg\"},{\"Title\":\"Batman\",\"Year\":\"1989\",\"imdbID\":\"tt0096895\",\"Type\":\"movie\",\"Poster\":\"http://ia.media-imdb.com/images/M/MV5BMTYwNjAyODIyMF5BMl5BanBnXkFtZTYwNDMwMDk2._V1_SX300.jpg\"},{\"Title\":\"Batman v Superman: Dawn of Justice\",\"Year\":\"2016\",\"imdbID\":\"tt2975590\",\"Type\":\"movie\",\"Poster\":\"http://ia.media-imdb.com/images/M/MV5BNTE5NzU3MTYzOF5BMl5BanBnXkFtZTgwNTM5NjQxODE@._V1_SX300.jpg\"},{\"Title\":\"Batman Returns\",\"Year\":\"1992\",\"imdbID\":\"tt0103776\",\"Type\":\"movie\",\"Poster\":\"http://ia.media-imdb.com/images/M/MV5BODM2OTc0Njg2OF5BMl5BanBnXkFtZTgwMDA4NjQxMTE@._V1_SX300.jpg\"},{\"Title\":\"Batman Forever\",\"Year\":\"1995\",\"imdbID\":\"tt0112462\",\"Type\":\"movie\",\"Poster\":\"http://ia.media-imdb.com/images/M/MV5BMjAwOTEyNjg0M15BMl5BanBnXkFtZTYwODQyMTI5._V1_SX300.jpg\"},{\"Title\":\"Batman & Robin\",\"Year\":\"1997\",\"imdbID\":\"tt0118688\",\"Type\":\"movie\",\"Poster\":\"http://ia.media-imdb.com/images/M/MV5BNTM1NTIyNjkwM15BMl5BanBnXkFtZTcwODkxOTQxMQ@@._V1_SX300.jpg\"},{\"Title\":\"Batman: The Animated Series\",\"Year\":\"1992–1995\",\"imdbID\":\"tt0103359\",\"Type\":\"series\",\"Poster\":\"http://ia.media-imdb.com/images/M/MV5BMTU3MjcwNzY3NF5BMl5BanBnXkFtZTYwNzA2MTI5._V1_SX300.jpg\"},{\"Title\":\"Batman: The Dark Knight Returns, Part 1\",\"Year\":\"2012\",\"imdbID\":\"tt2313197\",\"Type\":\"movie\",\"Poster\":\"http://ia.media-imdb.com/images/M/MV5BMzIxMDkxNDM2M15BMl5BanBnXkFtZTcwMDA5ODY1OQ@@._V1_SX300.jpg\"},{\"Title\":\"Batman: Under the Red Hood\",\"Year\":\"2010\",\"imdbID\":\"tt1569923\",\"Type\":\"movie\",\"Poster\":\"http://ia.media-imdb.com/images/M/MV5BMTMwNDEyMjExOF5BMl5BanBnXkFtZTcwMzU4MDU0Mw@@._V1_SX300.jpg\"},{\"Title\":\"Batman: Mask of the Phantasm\",\"Year\":\"1993\",\"imdbID\":\"tt0106364\",\"Type\":\"movie\",\"Poster\":\"http://ia.media-imdb.com/images/M/MV5BMTMzODU0NTYxN15BMl5BanBnXkFtZTcwNDUxNzUyMQ@@._V1_SX300.jpg\"}],\"totalResults\":\"298\",\"Response\":\"True\"}";
+        MovieCardPresenter movieCardPresenter = new MovieCardPresenter();
+        ArrayObjectAdapter movieCardRowAdapter = new ArrayObjectAdapter(movieCardPresenter);
+        Gson gson = new Gson();
+        SearchResult result = gson.fromJson(new String(json), SearchResult.class);
+        Log.i(TAG, result.toString());
+
+        for (int i = 0; i < result.getSearch().length; i++) {
+            Search movie = result.getSearch()[i];
+            if (!movie.getPoster().equalsIgnoreCase("N/A")) {
+                movieCardRowAdapter.add(movie);
+                mItems.add(movie);
+            }
+        }
+
+        return movieCardRowAdapter;
+    }
     private void loadTextRows(){
         mRowsAdapter = new ArrayObjectAdapter(new ListRowPresenter());
 
@@ -223,7 +250,41 @@ public class MainFragment extends BrowseFragment {
         });
     }
 
-    private void loadDataFromApiCustomHeader(final int pos, final String movieName) {
+
+    private ArrayObjectAdapter loadListDataFromApi(final int pos, final String movieName) {
+        RequestParams searchParams = new RequestParams();
+        searchParams.put("s", movieName);
+        searchParams.put("type", "movie");
+        final ArrayObjectAdapter[] arrayObjectAdapter = new ArrayObjectAdapter[1];
+        OMDBClient.get("", searchParams, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                Log.i(TAG, new String(responseBody));
+                Gson gson = new Gson();
+                SearchResult result = gson.fromJson(new String(responseBody), SearchResult.class);
+                HeaderItem cardHeaderItem = new HeaderItem(pos, movieName.toUpperCase() + " Movies");
+                MovieCardPresenter movieCardPresenter = new MovieCardPresenter();
+                ArrayObjectAdapter movieCardRowAdapter = new ArrayObjectAdapter(movieCardPresenter);
+                Log.i(TAG, result.toString());
+
+                for (int i = 0; i < result.getSearch().length; i++) {
+                    Search movie = result.getSearch()[i];
+                    if (!movie.getPoster().equalsIgnoreCase("N/A"))
+                        movieCardRowAdapter.add(movie);
+                }
+                arrayObjectAdapter[0] = movieCardRowAdapter;
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                Log.i(TAG + "Error", new String(error.toString()));
+            }
+        });
+
+        return arrayObjectAdapter[0];
+    }
+
+    private void loadListDataFromApiCustomHeader(final int pos, final String movieName) {
         RequestParams searchParams = new RequestParams();
         searchParams.put("s", movieName);
         searchParams.put("type", "movie");
@@ -284,10 +345,15 @@ public class MainFragment extends BrowseFragment {
                 } else if (item instanceof Search) {              // CardPresenter
                     Search movie = (Search) item;
                     Log.d(TAG, "Item: " + item.toString());
-                    Intent intent = new Intent(getActivity(), VideoDetailsActivity.class);
+                    RecommendationFactory recommendationFactory = new RecommendationFactory(getActivity().getApplicationContext());
+                    Search searchMovie = mItems.get(recommendationCounter % mItems.size());
+                    recommendationFactory.recommend(recommendationCounter, movie, NotificationCompat.PRIORITY_HIGH);
+                    Toast.makeText(getActivity(), "Recommendation sent (item " + recommendationCounter + ")", Toast.LENGTH_SHORT).show();
+                    recommendationCounter++;
+                    /*Intent intent = new Intent(getActivity(), VideoDetailsActivity.class);
                     intent.putExtra("IMDB_MOVIE", movie);
 
-                    getActivity().startActivity(intent);
+                    getActivity().startActivity(intent);*/
                 }
             }
         });

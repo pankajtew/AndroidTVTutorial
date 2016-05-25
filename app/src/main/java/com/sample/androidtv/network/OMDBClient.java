@@ -13,6 +13,10 @@ public class OMDBClient {
 
     private static AsyncHttpClient client = new AsyncHttpClient();
 
+    static {
+
+    }
+
     public static void get(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
         client.get(getAbsoluteUrl(url), params, responseHandler);
     }

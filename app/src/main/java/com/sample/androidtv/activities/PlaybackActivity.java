@@ -35,7 +35,7 @@ public class PlaybackActivity extends Activity {
         mVideoView.setFocusable(false);
         mVideoView.setFocusableInTouchMode(false);
 
-        Search movie = (Search) getIntent().getSerializableExtra("IMDB_MOVIE");
+        Search movie = (Search) getIntent().getParcelableExtra("IMDB_MOVIE");
         //setVideoPath("http://tv.life.ru/lifetv/360p/index.m3u8");
 
         // mVideoView.setVideoURI(Uri.parse("https://archive.org/download/ksnn_compilation_master_the_internet/ksnn_compilation_master_the_internet_512kb.mp4"));
